@@ -12,7 +12,7 @@ import java.awt.geom.Line2D;
 import java.util.Random;
 import javax.swing.JPanel;
 
-
+// class to create the window
 public class CatsCradlePanel extends JPanel implements ActionListener {
 
     private static final Color BG_COLOR = new Color(90, 90, 90);
@@ -122,8 +122,6 @@ public class CatsCradlePanel extends JPanel implements ActionListener {
       g2D.draw(line);
     } // for
 
-    // Make the remaining edges (line segments) needed to define
-    // the complete graph on the outside set of points.
     g2D.setStroke(this.outsideStroke);
     for (int i = 0; i < this.numberOfSides; i++) {
         Vector2D u = outside[i];
@@ -147,8 +145,7 @@ public class CatsCradlePanel extends JPanel implements ActionListener {
         } // for
     } // for
 
-    // Make the remaining edges (line segments) needed to define
-    // the complete graph on the inside set of points.
+
     g2D.setStroke(this.insideStroke);
     for (int i = 0; i < this.numberOfSides; i++) {
         Vector2D u = inside[i];
@@ -161,16 +158,13 @@ public class CatsCradlePanel extends JPanel implements ActionListener {
             double x1 = v.getX();
             double y1 = v.getY();
 
-            // Make color a function of the line segment's length.
-            // (The segment is longer if it connects vertices whose
-            // indices differ more.)
             int index = Math.abs(i - j);
             g2D.setColor(this.colors[index]);
 
             Line2D line = new Line2D.Double(x0, y0, x1, y1);
             g2D.draw(line);
             } // for
-        } // for
+        } // for 2nd
   } // paintComponent( Graphics )
 
   @Override
