@@ -1,17 +1,29 @@
 package com.vector;
 
+/**
+ * <h1>Hello!</h1>
+ * <p> This is the main class for my Cats Cradle code! </p>
+ * 
+ * @author Brodie McCuen
+ * @since 2021-12-3
+ * CSC 144
+ */
 import javax.swing.JFrame;
 import javax.swing.Timer;
 import java.awt.Container;
 
 public class CatsCradle extends JFrame{
 
+    /**
+     *
+     */
     private static final int FRAME_WIDTH = 600;
     private static final int  FRAME_HEIGHT = 600;
     private static final String FRAME_TITLE = "Cat's Cradle";
     private static final int NUMBER_OF_SIDES = 8;
 
     public CatsCradle() {
+
         this.setSize(FRAME_WIDTH, FRAME_HEIGHT);
         this.setTitle(FRAME_TITLE);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

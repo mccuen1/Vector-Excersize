@@ -19,7 +19,7 @@ public class CatsCradlePanel extends JPanel implements ActionListener {
     private static final Color BG_COLOR = new Color(163, 90, 196);
     private static final Color FG_COLOR = new Color(180, 192, 224);
 
-    private static final double MARGIN = 0.2;
+    private static final double MARGIN = -0.1;
     private static final double SPEED = 40.0;
 
     private static final float OUTSIDE_LINE_THICKNESS = 5;
@@ -34,13 +34,16 @@ public class CatsCradlePanel extends JPanel implements ActionListener {
     private Stroke insideStroke;
     private Stroke outsideStroke;
 
-    
+    /**
+     * This sets up the cats cradle panel.
+     * @param numberOfSides number of sides the polygon has
+     */
     public CatsCradlePanel(int numberOfSides) {
         this.setBackground(BG_COLOR);
         this.setForeground(FG_COLOR);
         this.numberOfSides = numberOfSides;
-        this.outerStep = -2.0 * Math.PI / (SPEED * numberOfSides);
-        this.innerStep = +2.0 * Math.PI / (2.0 * SPEED * numberOfSides);
+        this.outerStep = 0.5 * Math.PI / (SPEED * numberOfSides);
+        this.innerStep = 7.0 * Math.PI / (SPEED * numberOfSides);
         this.outerAngle = 0.0;
         this.innerAngle = 0.0;
         this.insideStroke = new BasicStroke(INSIDE_LINE_THICKNESS, 
@@ -52,9 +55,12 @@ public class CatsCradlePanel extends JPanel implements ActionListener {
 
         Random random = new Random();
         for (int i = 0; i < numberOfSides; i++) {
-            int red = 64 + random.nextInt(62);
-            int green = 64 + random.nextInt(62);
-            int blue = 64 + random.nextInt(62);
+            int red = 90 + random.nextInt(60);
+            int green = 10 + random.nextInt(60);
+            int blue = 90 + random.nextInt(60);
+            // int red = Math.floor(90 + i*5);
+            // int green = Math.floor(90 + i*5);
+            // int blue = Math.floor(90 + i*5);
             this.colors[i] = new Color(red, green, blue);
         }
     }
@@ -82,97 +88,96 @@ public class CatsCradlePanel extends JPanel implements ActionListener {
             inside[i] = new Vector2D(goldenRatio * x, goldenRatio * y);
         } // for
 
-    // Make the 2 polygons that are defined by t
-    double rotation = 0.0;
-    // This is how much bigge
-    double scaleX = (1.0 - 2.0 * MARGIN) * w / 2;
-    double scaleY = (1.0 - 2.0 * MARGIN) * h / 2;
-    // to put their centers at the center of the panel.
-    double deltaX = w / 2;
-    double deltaY = h / 2;
 
-    g2D.setColor(FG_COLOR);
-    for (int i = 0; i < outside.length; i++) {
-      Vector2D u = outside[i];
-      u = u.rotateScaleTranslate(rotation, scaleX, scaleY, deltaX, deltaY);
+        double rotation = 0.0;
 
-      Vector2D v = outside[(i + 1) % this.numberOfSides];
-      v = v.rotateScaleTranslate(rotation, scaleX, scaleY, deltaX, deltaY);
+        double scaleX = (1.0 - 2.0 * MARGIN) * w / 2;
+        double scaleY = (1.0 - 2.0 * MARGIN) * h / 2;
+        // to put their centers at the center of the panel.
+        double deltaX = w / 4;
+        double deltaY = h / 4;
 
-      double x0 = u.getX();
-      double y0 = u.getY();
-      double x1 = v.getX();
-      double y1 = v.getY();
-      Line2D line = new Line2D.Double(x0, y0, x1, y1);
-      g2D.setStroke(this.outsideStroke);
-      g2D.draw(line);
-
-      u = inside[i];
-      u = u.rotateScaleTranslate(rotation, scaleX, scaleY, deltaX, deltaY);
-
-      v = inside[(i + 1) % this.numberOfSides];
-      v = v.rotateScaleTranslate(rotation, scaleX, scaleY, deltaX, deltaY);
-
-      x0 = u.getX();
-      y0 = u.getY();
-      x1 = v.getX();
-      y1 = v.getY();
-
-      line = new Line2D.Double(x0, y0, x1, y1);
-      g2D.setStroke(this.insideStroke);
-      g2D.draw(line);
-    } // for
-
-    g2D.setStroke(this.outsideStroke);
-    for (int i = 0; i < this.numberOfSides; i++) {
+        g2D.setColor(FG_COLOR);
+        for (int i = 0; i < outside.length; i++) {
         Vector2D u = outside[i];
-        u = u.rotateScaleTranslate(angle, scaleX, scaleY, deltaX, deltaY);
+        u = u.rotateScaleTranslate(rotation, scaleX, scaleY, deltaX, deltaY);
+
+        Vector2D v = outside[(i + 1) % this.numberOfSides];
+        v = v.rotateScaleTranslate(rotation, scaleX, scaleY, deltaX, deltaY);
+
         double x0 = u.getX();
         double y0 = u.getY();
-        for (int j = i + 1; j < this.numberOfSides; j++) {
-            Vector2D v = outside[j];
-            v = v.rotateScaleTranslate(rotation, scaleX, scaleY, deltaX, deltaY);
-            double x1 = v.getX();
-            double y1 = v.getY();
+        double x1 = v.getX();
+        double y1 = v.getY();
+        Line2D line = new Line2D.Double(x0, y0, x1, y1);
+        g2D.setStroke(this.outsideStroke);
+        g2D.draw(line);
 
-            // Make color a function of the line segment's length.
-            // (The segment is longer if it connects vertices whose
-            // indices differ more.)
-            int index = Math.abs(i - j);
-            g2D.setColor(this.colors[index]);
+        u = inside[i];
+        u = u.rotateScaleTranslate(rotation, scaleX, scaleY, deltaX, deltaY);
 
-            Line2D line = new Line2D.Double(x0, y0, x1, y1);
-            g2D.draw(line);
+        v = inside[(i + 1) % this.numberOfSides];
+        v = v.rotateScaleTranslate(rotation, scaleX, scaleY, deltaX, deltaY);
+
+        x0 = u.getX();
+        y0 = u.getY();
+        x1 = v.getX();
+        y1 = v.getY();
+
+        line = new Line2D.Double(x0, y0, x1, y1);
+        g2D.setStroke(this.insideStroke);
+        g2D.draw(line);
         } // for
-    } // for
+
+        g2D.setStroke(this.outsideStroke);
+        for (int i = 0; i < this.numberOfSides; i++) {
+            Vector2D u = outside[i];
+            u = u.rotateScaleTranslate(angle, scaleX, scaleY, deltaX, deltaY);
+            double x0 = u.getX();
+            double y0 = u.getY();
+            for (int j = i + 1; j < this.numberOfSides; j++) {
+                Vector2D v = outside[j];
+                v = v.rotateScaleTranslate(rotation, scaleX, scaleY, deltaX, deltaY);
+                double x1 = v.getX();
+                double y1 = v.getY();
+
+                int index = Math.abs(i - j);
+                g2D.setColor(this.colors[index]);
+
+                Line2D line = new Line2D.Double(x0, y0, x1, y1);
+                g2D.draw(line);
+            } // for
+        } // for
 
 
-    g2D.setStroke(this.insideStroke);
-    for (int i = 0; i < this.numberOfSides; i++) {
-        Vector2D u = inside[i];
-        u = u.rotateScaleTranslate(angle, scaleX, scaleY, deltaX, deltaY);
-        double x0 = u.getX();
-        double y0 = u.getY();
-        for (int j = i + 1; j < this.numberOfSides; j++) {
-            Vector2D v = inside[j];
-            v = v.rotateScaleTranslate(rotation, scaleX, scaleY, deltaX, deltaY);
-            double x1 = v.getX();
-            double y1 = v.getY();
+        g2D.setStroke(this.insideStroke);
+        for (int i = 0; i < this.numberOfSides; i++) {
+            Vector2D u = inside[i];
+            u = u.rotateScaleTranslate(angle, scaleX, scaleY, deltaX, deltaY);
+            double x0 = u.getX();
+            double y0 = u.getY();
+            for (int j = i + 1; j < this.numberOfSides; j++) {
+                Vector2D v = inside[j];
+                v = v.rotateScaleTranslate(rotation, scaleX, scaleY, deltaX, deltaY);
+                double x1 = v.getX();
+                double y1 = v.getY();
 
-            int index = Math.abs(i - j);
-            g2D.setColor(this.colors[index]);
+                int index = Math.abs(i - j);
+                g2D.setColor(this.colors[index]);
 
-            Line2D line = new Line2D.Double(x0, y0, x1, y1);
-            g2D.draw(line);
+                Line2D line = new Line2D.Double(x0, y0, x1, y1);
+                g2D.draw(line);
             } // for
         } // for 2nd
-  } // paintComponent( Graphics )
+    } // paintComponent( Graphics )
+
+    
 
   @Override
-  public void actionPerformed(ActionEvent e) {
-    this.outerAngle += this.outerStep;
-    this.innerAngle += this.innerStep;
-    this.repaint();
+    public void actionPerformed(ActionEvent e) {
+        this.outerAngle += this.outerStep;
+        this.innerAngle += this.innerStep;
+        this.repaint();
     } // actionPerformed( ActionEvent )
 }
     
