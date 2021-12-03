@@ -9,7 +9,7 @@ public class CatsCradle extends JFrame{
     private static final int FRAME_WIDTH = 600;
     private static final int  FRAME_HEIGHT = 600;
     private static final String FRAME_TITLE = "Cat's Cradle";
-    private static final int NUMBER_OF_SIDES = 12;
+    private static final int NUMBER_OF_SIDES = 8;
 
     public CatsCradle() {
         this.setSize(FRAME_WIDTH, FRAME_HEIGHT);

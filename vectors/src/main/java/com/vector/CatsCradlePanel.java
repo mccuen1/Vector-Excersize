@@ -13,15 +13,16 @@ import java.util.Random;
 import javax.swing.JPanel;
 
 // class to create the window
+// cannot exist multiple inheritence
 public class CatsCradlePanel extends JPanel implements ActionListener {
 
-    private static final Color BG_COLOR = new Color(90, 90, 90);
+    private static final Color BG_COLOR = new Color(163, 90, 196);
     private static final Color FG_COLOR = new Color(180, 192, 224);
 
-    private static final double MARGIN = 0.1;
-    private static final double SPEED = 64.0;
+    private static final double MARGIN = 0.2;
+    private static final double SPEED = 40.0;
 
-    private static final float OUTSIDE_LINE_THICKNESS = 4;
+    private static final float OUTSIDE_LINE_THICKNESS = 5;
     private static final float INSIDE_LINE_THICKNESS = 2;
     private int numberOfSides;
     private double outerStep;
@@ -51,9 +52,9 @@ public class CatsCradlePanel extends JPanel implements ActionListener {
 
         Random random = new Random();
         for (int i = 0; i < numberOfSides; i++) {
-            int red = 64 + random.nextInt(192);
-            int green = 64 + random.nextInt(192);
-            int blue = 64 + random.nextInt(192);
+            int red = 64 + random.nextInt(62);
+            int green = 64 + random.nextInt(62);
+            int blue = 64 + random.nextInt(62);
             this.colors[i] = new Color(red, green, blue);
         }
     }
